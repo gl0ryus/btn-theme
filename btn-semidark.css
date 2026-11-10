@@ -6928,3 +6928,102 @@ html body .linkbox:has(>strong){justify-content:flex-end !important;padding:12px
   html body #header #menu1>li>ul{left:0 !important;top:100% !important}
   html body #header #donation{margin:12px 0 10px !important}
 }
+
+/* ==========================================================================
+   Glide rail
+   The sidebar rests as a narrow icon rail and glides open over the page on
+   hover. Touch screens (no hover) keep the full sidebar.
+   ========================================================================== */
+@media (hover:hover) and (min-width:901px){
+  :root{
+    --sd-rail-w:68px;                            /* collapsed width */
+    --sd-glide:.26s cubic-bezier(.2,.8,.2,1);    /* open/close motion */
+  }
+
+  /* Content and top bar sit beside the rail, not the full sidebar */
+  html body #wrapper{padding-left:calc(var(--sd-rail-w) + 32px) !important}
+  html body #header #searchbars{left:var(--sd-rail-w) !important;transition:left var(--sd-glide) .12s !important}
+
+  /* Rail: closed by default, short grace period before it closes */
+  html body #header{
+    width:var(--sd-rail-w) !important;
+    transition:width var(--sd-glide) .12s,box-shadow var(--sd-glide) .12s !important;
+  }
+  /* Open on hover (but not while using the top bar, which lives inside #header) */
+  html body #header:hover:not(:has(#searchbars:hover)),
+  html body #header:has(#menu :focus-visible,#userinfo :focus-visible){
+    width:var(--sd-side) !important;
+    box-shadow:24px 0 48px rgba(0,0,0,.38) !important;
+    transition:width var(--sd-glide) .06s,box-shadow var(--sd-glide) .06s !important;
+  }
+  html body #header:hover:not(:has(#searchbars:hover)) #searchbars,
+  html body #header:has(#menu :focus-visible,#userinfo :focus-visible) #searchbars{
+    left:var(--sd-side) !important;
+    transition:left var(--sd-glide) .06s !important;
+  }
+
+  /* Things that fade: labels, logo text, cards, user details */
+  html body #header #logo a::after,
+  html body #header #logo::after,
+  html body #header #menu1::before,
+  html body #header #nav_bonus::before,
+  html body #header #alerts>*,
+  html body #header #donation,
+  html body #header #userinfo_username>li:first-child a,
+  html body #header #userinfo_username>li:not(:first-child),
+  html body #header #userinfo_stats,
+  html body #header #userinfo_major{
+    opacity:0 !important;
+    transition:opacity .12s ease !important;
+    pointer-events:none !important;
+  }
+  html body #header:hover:not(:has(#searchbars:hover)) #logo a::after,
+  html body #header:hover:not(:has(#searchbars:hover)) #logo::after,
+  html body #header:hover:not(:has(#searchbars:hover)) #menu1::before,
+  html body #header:hover:not(:has(#searchbars:hover)) #nav_bonus::before,
+  html body #header:hover:not(:has(#searchbars:hover)) :is(#alerts>*,#donation,#userinfo_username>li:first-child a,#userinfo_username>li:not(:first-child),#userinfo_stats,#userinfo_major){
+    opacity:1 !important;
+    transition:opacity .18s ease .14s !important;
+  }
+  html body #header:hover:not(:has(#searchbars:hover)) :is(#alerts>*,#donation,#userinfo_username>li:first-child a,#userinfo_username>li:not(:first-child),#userinfo_stats,#userinfo_major){pointer-events:auto !important}
+
+  /* Keep wide pieces at full width so they don't reflow while gliding */
+  html body #header #logo,
+  html body #header #logo a{overflow:hidden !important}
+  html body #header #donation,
+  html body #header #userinfo,
+  html body #header #alerts{width:calc(var(--sd-side) - 28px) !important;box-sizing:border-box !important}
+  html body #header #menu1>li>a{overflow:hidden !important}
+  /* Hide menu label text on the rail so no letters peek past the icons */
+  html body #header:not(:hover) #menu1>li>a,
+  html body #header:has(#searchbars:hover) #menu1>li>a{-webkit-text-fill-color:transparent !important}
+
+  /* User card: only the avatar shows on the rail */
+  html body #header #userinfo{
+    background:transparent !important;
+    border-color:transparent !important;
+    pointer-events:none !important;
+    transition:background-color .15s ease,border-color .15s ease !important;
+  }
+  html body #header:hover:not(:has(#searchbars:hover)) #userinfo{
+    background:var(--sd-card) !important;
+    border-color:var(--sd-line) !important;
+    pointer-events:auto !important;
+    transition:background-color .18s ease .12s,border-color .18s ease .12s !important;
+  }
+
+  /* New-message alerts show as a dot on the rail */
+  html body #header #alerts:has(>*)::before{
+    content:"";
+    position:absolute;
+    left:30px;
+    width:8px;
+    height:8px;
+    margin-top:-14px;
+    border-radius:50%;
+    background:var(--sd-accent);
+    box-shadow:0 0 0 3px var(--sd-accent-soft);
+    transition:opacity .12s ease;
+  }
+  html body #header:hover:not(:has(#searchbars:hover)) #alerts::before{opacity:0}
+}
