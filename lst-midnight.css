@@ -650,3 +650,79 @@ html body .forum-hero__icon i,
 html body .forum-item__icon i{color:inherit !important;border-color:transparent !important}
 html body .forum-hero__stat-value{color:var(--lst-accent-soft) !important}
 html body main i.fa-layer-group{color:var(--lst-accent) !important}
+
+/* ==========================================================================
+   Glide rail
+   The sidebar rests as a narrow icon rail and glides open over the page on
+   hover. Touch screens (no hover) keep the full sidebar.
+   ========================================================================== */
+@media (hover:hover) and (min-width:1000px){
+  html:root:root{
+    --x-rail:64px;                               /* collapsed width */
+    --x-glide:.26s cubic-bezier(.2,.8,.2,1);     /* open/close motion */
+  }
+
+  /* Page sits beside the rail, not the full sidebar */
+  html body{padding-left:var(--x-rail) !important}
+
+  /* Rail: closed by default, short grace period before it closes */
+  html body .top-nav{
+    width:var(--x-rail) !important;
+    transition:width var(--x-glide) .12s,box-shadow var(--x-glide) .12s !important;
+  }
+  html body .top-nav:hover,
+  html body .top-nav:focus-within{
+    width:var(--x-side) !important;
+    box-shadow:24px 0 48px rgba(0,0,0,.42) !important;
+    transition:width var(--x-glide) .06s,box-shadow var(--x-glide) .06s !important;
+  }
+
+  /* Things that fade: logo text, section label, stats, extra icons */
+  html body .top-nav__site-logo,
+  html body .top-nav__main-menus::before,
+  html body .top-nav__ratio-bar,
+  html body .top-nav__icon-bar>li:not(:last-child){
+    opacity:0 !important;
+    transition:opacity .12s ease !important;
+    pointer-events:none !important;
+  }
+  html body .top-nav:is(:hover,:focus-within) .top-nav__site-logo,
+  html body .top-nav:is(:hover,:focus-within) .top-nav__main-menus::before,
+  html body .top-nav:is(:hover,:focus-within) .top-nav__ratio-bar,
+  html body .top-nav:is(:hover,:focus-within) .top-nav__icon-bar>li:not(:last-child){
+    opacity:1 !important;
+    transition:opacity .18s ease .14s !important;
+    pointer-events:auto !important;
+  }
+  html body .top-nav__main-menus::before{pointer-events:none !important}
+
+  /* Keep wide pieces at full width so they don't reflow while gliding */
+  html body .top-nav__branding,
+  html body .top-nav__main-menus>li>a{overflow:hidden !important}
+  /* Hide menu label text on the rail so no letters peek past the icons */
+  html body .top-nav:not(:hover):not(:focus-within) .top-nav__main-menus>li>a{-webkit-text-fill-color:transparent !important}
+  /* Search box shrinks to an icon button on the rail (the site gives it a 240px minimum) */
+  html body .top-nav__left .quick-search,
+  html body .top-nav__left .quick-search__inputs{min-width:0 !important;width:100% !important}
+  html body .top-nav__ratio-bar,
+  html body .top-nav__icon-bar{width:calc(var(--x-side) - 24px) !important;box-sizing:border-box !important}
+
+  /* Icon row: avatar moves to the front so it stays on the rail */
+  html body .top-nav__icon-bar{
+    position:relative !important;
+    background:transparent !important;
+    border-color:transparent !important;
+    pointer-events:none !important;
+    transition:background-color .15s ease,border-color .15s ease !important;
+  }
+  html body .top-nav:is(:hover,:focus-within) .top-nav__icon-bar{
+    background:var(--lst-bg2) !important;
+    border-color:var(--x-line) !important;
+    pointer-events:auto !important;
+    transition:background-color .18s ease .12s,border-color .18s ease .12s !important;
+  }
+  html body .top-nav__icon-bar>li{position:static !important}
+  html body .top-nav__icon-bar>li:last-child{order:-1 !important;margin:0 auto 0 0 !important;pointer-events:auto !important}
+  /* Profile menu anchors to the whole row, so it opens beside the sidebar */
+  html body .top-nav__icon-bar .top-nav__dropdown>.top-nav__dropdown-menu{left:calc(100% + 20px) !important;bottom:0 !important}
+}
