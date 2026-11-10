@@ -725,4 +725,18 @@ html body main i.fa-layer-group{color:var(--lst-accent) !important}
   html body .top-nav__icon-bar>li:last-child{order:-1 !important;margin:0 auto 0 0 !important;pointer-events:auto !important}
   /* Profile menu anchors to the whole row, so it opens beside the sidebar */
   html body .top-nav__icon-bar .top-nav__dropdown>.top-nav__dropdown-menu{left:calc(100% + 20px) !important;bottom:0 !important}
+
+  /* One centre line on the rail: logo, search, menu icons and avatar all sit at x = 32px */
+  html body .top-nav__branding{padding:2px 3px !important}
+  html body .top-nav__main-menus>li>a{padding-left:12px !important}
+  html body .top-nav__main-menus>li>a::before{flex:0 0 16px !important;width:16px !important;height:16px !important}
+  html body .top-nav__left .quick-search__input{
+    min-width:0 !important;
+    flex:1 1 auto !important;
+    transition:background-position var(--x-glide) .06s,border-color .15s,box-shadow .15s !important;
+  }
+  html body .top-nav:not(:hover):not(:focus-within) .top-nav__left .quick-search__input{background-position:center center !important;padding:0 !important}
+  html body .top-nav:not(:hover):not(:focus-within) .top-nav__left .quick-search__input::placeholder{color:transparent !important}
+  html body .top-nav__icon-bar>li:last-child{transition:margin var(--x-glide) .06s !important}
+  html body .top-nav:not(:hover):not(:focus-within) .top-nav__icon-bar>li:last-child{margin-left:-6px !important}
 }
