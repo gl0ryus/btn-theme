@@ -6259,6 +6259,7 @@ html body .linkbox:has(>strong)>strong{
 /* ── Forums ── */
 html body .forum_post{overflow:hidden !important}
 html body .forum_post tr.colhead_dark>td{background:var(--sd-rail) !important}
+html body #content .forum_post tr.colhead_dark>td{text-transform:none !important;letter-spacing:0 !important;font-size:12.5px !important;font-weight:500 !important}
 html body blockquote,html body pre,html body .code{
   background:var(--sd-recessed) !important;
   border:1px solid var(--sd-line) !important;
@@ -6534,21 +6535,14 @@ html body #header #menu1>li>a::after{content:none !important}
 html body #header #menu1>li:hover>a{background:var(--sd-fill) !important;color:var(--sd-text) !important}
 html body #header #menu1>li:hover>a::before{color:var(--sd-text) !important}
 
-/* Current section */
-html body#index #header #menu1>li#nav_index>a,
-html body#torrents #header #menu1>li#nav_torrent>a,
-html body#series #header #menu1>li#nav_tv>a,
-html body#tvnews #header #menu1>li#nav_tv>a,
-html body#forums #header #menu1>li#nav_community>a,
-html body#user #header #menu1>li#nav_user>a,
-html body#inbox #header #menu1>li#nav_user>a{background:var(--sd-fill) !important;color:var(--sd-text) !important;font-weight:600 !important}
-html body#index #header #menu1>li#nav_index>a::before,
-html body#torrents #header #menu1>li#nav_torrent>a::before,
-html body#series #header #menu1>li#nav_tv>a::before,
-html body#tvnews #header #menu1>li#nav_tv>a::before,
-html body#forums #header #menu1>li#nav_community>a::before,
-html body#user #header #menu1>li#nav_user>a::before,
-html body#inbox #header #menu1>li#nav_user>a::before{color:var(--sd-accent) !important}
+/* Current section. BTN's body id is not reliable (it can name a different section),
+   so the highlight keys off what is actually on the page. */
+html body:has(#content>#torrent_table,#upload_table) #header #menu1>li#nav_torrent>a,
+html body:has(#content a[href*="action=viewforum"]) #header #menu1>li#nav_community>a,
+html body:has(.useredit,.user_profile) #header #menu1>li#nav_user>a{background:var(--sd-fill) !important;color:var(--sd-text) !important;font-weight:600 !important}
+html body:has(#content>#torrent_table,#upload_table) #header #menu1>li#nav_torrent>a::before,
+html body:has(#content a[href*="action=viewforum"]) #header #menu1>li#nav_community>a::before,
+html body:has(.useredit,.user_profile) #header #menu1>li#nav_user>a::before{color:var(--sd-accent) !important}
 
 /* Flyouts open to the right of the sidebar */
 html body #header #menu1>li>ul{
@@ -6876,7 +6870,8 @@ html body #header #searchbars input:hover{background-color:var(--sd-fill) !impor
 html body #header #searchbars input:focus{background-color:var(--sd-card) !important;border-color:rgba(255,107,44,.6) !important;box-shadow:0 0 0 3px var(--sd-accent-soft) !important}
 
 /* ── Page headings ── */
-html body #content h2{
+html body #content h2:not(table h2),
+html body #content .thin h2:not(table h2){
   margin:0 0 18px !important;
   padding:0 !important;
   background:none !important;
@@ -6887,9 +6882,10 @@ html body #content h2{
   letter-spacing:-.02em !important;
   text-align:left !important;
 }
+html body #content table h2{margin:4px 0 !important;font-size:15px !important;font-weight:600 !important;line-height:1.35 !important;letter-spacing:0 !important;text-transform:none !important}
 
 /* Torrents page has no heading of its own: add one beside the top pager */
-html body#torrents #content:has(>#torrent_table)::before{
+html body #content:has(>#torrent_table)::before{
   content:"Browse Torrents";
   float:left;
   margin:0;
@@ -6900,7 +6896,7 @@ html body#torrents #content:has(>#torrent_table)::before{
   letter-spacing:-.02em;
   line-height:40px;
 }
-html body#torrents #torrent_table{clear:both !important}
+html body #content>#torrent_table{clear:both !important}
 
 /* ── Torrent list as a reference-style data table ── */
 html body #torrent_table tr>:nth-child(1){width:120px !important}
