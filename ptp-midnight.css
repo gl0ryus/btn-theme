@@ -1,0 +1,368 @@
+/* PTP Midnight: sidebar layout, navy + amber. Loads the stock dark sheet, then overrides it. */
+@import url("https://passthepopcorn.me/static/styles/dark/style.css");
+
+:root {
+  --bg: #0e1322;        /* page */
+  --surface: #161d33;   /* cards, sidebar */
+  --raised: #1f2846;    /* headings, hover */
+  --border: #2b3557;
+  --text: #e4e8f7;
+  --muted: #97a1c4;
+  --accent: #f2b544;    /* popcorn amber */
+  --accent-ink: #1a1405;
+  --nav-w: 248px;
+  --radius: 12px;
+}
+
+/* ---------- Base ---------- */
+html { scrollbar-color: var(--border) var(--bg); }
+body {
+  max-width: none; margin: 0; padding-left: var(--nav-w);
+  background: var(--bg); color: var(--text);
+  font: 13px/1.5 Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+::selection { background: var(--accent); color: var(--accent-ink); }
+a { color: #c3ccec; transition: color .12s; }
+a:hover { color: var(--accent); }
+h2 { font-size: 18px; font-weight: 700; margin: 28px 0 12px; }
+h2 small { font-weight: 400; color: var(--muted); }
+
+/* ---------- Sidebar (was the top bar) ---------- */
+#header {
+  position: fixed; top: 0; bottom: 0; left: 0; width: var(--nav-w);
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 16px 12px; overflow-y: auto; scrollbar-width: thin;
+  background: var(--surface); border-right: 1px solid var(--border); z-index: 100;
+}
+.site-logo {
+  position: static; flex: none; width: auto; height: 46px; margin: 0;
+  background-size: contain; background-position: center;
+}
+.site-logo__link { width: 100%; height: 100%; margin: 0; }
+
+/* Search: Movies box always visible, the other six slide open on focus */
+.search-bar {
+  order: 1; flex: none; width: auto; margin: 0; padding: 0;
+  background: none; border-radius: 0; text-align: left;
+}
+.search-bar__list { display: flex; flex-direction: column; margin: 0; }
+.search-bar__search-field {
+  display: block; max-height: 0; opacity: 0; overflow: hidden;
+  transition: max-height .18s ease, opacity .18s ease;
+}
+#searchbar_torrents,
+.search-bar:focus-within .search-bar__search-field { max-height: 42px; opacity: 1; overflow: visible; }
+.search-bar__search-field__form { display: block; padding-bottom: 6px; }
+.search-bar__search-field__input {
+  display: block; top: 0; width: 100%; margin: 0; padding: 8px 12px;
+  font-size: 13px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+}
+.search-bar__search-field__input::placeholder { color: var(--muted); }
+.search-bar__results { width: 100%; margin-top: -4px; border-color: var(--border); border-radius: 8px; overflow: hidden; }
+.search-bar__results__list-item { background: var(--bg); border-bottom-color: var(--border); text-align: left; }
+.search-bar__results__list-item--is-highlighted { background: var(--raised); }
+.search-bar__results__link, .search-bar__results__link:hover { color: var(--muted); }
+
+/* Main menu */
+.main-menu {
+  order: 2; flex: none; width: auto; height: auto; margin: 0;
+  background: none; opacity: 1; border-radius: 0;
+}
+.main-menu__list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; text-align: left; }
+.main-menu__item { display: block; padding: 0; text-align: left; font-size: 13px; }
+.main-menu__link { display: block; padding: 7px 12px; border-radius: 8px; font-weight: 600; color: var(--muted); }
+.main-menu__link:hover { background: var(--raised); color: var(--text); }
+body#index #nav_index > a, body#torrents #nav_torrents > a, body#collages #nav_collages > a,
+body#requests #nav_requests > a, body#forums #nav_forums > a, body#top10 #nav_top10 > a,
+body#rules #nav_rules > a, body#wiki #nav_wiki > a, body#staff #nav_staff > a {
+  background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent);
+}
+
+/* User block: stats, actions, personal links, account row pinned to the bottom */
+.user-info-bar {
+  order: 3; flex: 1 0 auto; position: static; width: auto; height: auto;
+  display: flex; flex-direction: column; gap: 14px;
+  margin: 0; padding: 14px 0 0; border-top: 1px solid var(--border);
+  background: none; border-radius: 0; text-align: left; color: var(--muted);
+}
+.user-info-bar__list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 6px; margin: 0; }
+.user-info-bar__item { display: block; margin: 0; line-height: 1.4; }
+.user-info-bar__link, .user-info-bar__link:hover { text-decoration: none; color: var(--muted); }
+.user-info-bar__link:hover { color: var(--text); }
+.user-info-bar__link--highlighted { color: var(--accent) !important; }
+
+#userinfo_stats { order: 1; gap: 6px; }
+#userinfo_stats .user-info-bar__item {
+  display: flex; flex-direction: column; padding: 6px 10px;
+  background: var(--bg); border-radius: 8px; font-size: 0; /* hides the stray ": " */
+}
+#userinfo_stats .user-info-bar__link { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+#userinfo_stats .user-info-bar__text { font-size: 13px; font-weight: 600; color: var(--text); }
+
+#userinfo_major { order: 2; gap: 6px; }
+#userinfo_major .user-info-bar__link {
+  display: block; padding: 6px 8px; text-align: center; font-weight: 600;
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+}
+#userinfo_major .user-info-bar__link:hover { border-color: var(--accent); color: var(--accent); }
+#nav_upload .user-info-bar__link { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+#nav_upload .user-info-bar__link:hover { color: var(--accent-ink); filter: brightness(1.1); }
+#nav_bonus, #nav_donate { grid-column: 1 / -1; }
+#userinfo_major .user-info-bar__link--donations-behind { color: #ff6b57; }
+
+#userinfo_minor { order: 3; }
+#userinfo_minor .user-info-bar__link,
+.user-info-bar__drop-down-menu__link { display: block; padding: 4px 12px; border-radius: 6px; color: var(--muted); }
+#userinfo_minor .user-info-bar__link:hover,
+.user-info-bar__drop-down-menu__link:hover { background: var(--raised); color: var(--text); }
+#nav_more { grid-column: 1 / -1; }
+.user-info-bar__drop-down-menu {
+  position: static; visibility: visible; display: none;
+  margin: 2px 0 0 12px; padding: 0; border-left: 1px solid var(--border);
+}
+.user-info-bar__item--drop-down-menu-opener:hover > .user-info-bar__drop-down-menu,
+.user-info-bar__item--drop-down-menu-opener:focus-within > .user-info-bar__drop-down-menu { display: block; }
+.user-info-bar__drop-down-menu__item { background: none; }
+
+#userinfo_username {
+  order: 4; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+#nav_userinfo { flex: 1; min-width: 0; }
+#nav_userinfo .user-info-bar__link { font-size: 14px; font-weight: 700; color: var(--text); }
+
+/* ---------- Content shell ---------- */
+.page__main-content {
+  display: flow-root; width: auto; max-width: 1320px; margin: 0 auto;
+  padding: 24px 28px; background: none; border-radius: 0; overflow: visible;
+}
+.page__title { text-align: left; margin: 0 0 12px; font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+.linkbox { text-align: left; margin: 0 0 16px; }
+.linkbox .linkbox { display: inline; margin: 0; }
+.linkbox__link {
+  display: inline-block; margin: 0 2px 6px 0; padding: 4px 11px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px; color: var(--muted);
+}
+.linkbox__link:hover { border-color: var(--accent); }
+.linkbox__link--current { background: var(--raised); color: var(--text); }
+.pagination { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; font-size: 0; text-align: left; } /* font-size 0 hides the "|" separators */
+.pagination--bottom { margin: 22px 0 0; }
+.pagination > *, .pagination__link, .pagination__current-page {
+  font-size: 12px; font-weight: 600; padding: 5px 10px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--muted);
+}
+.pagination__link:hover { border-color: var(--accent); color: var(--accent); }
+.pagination__current-page { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.sidebar { width: 300px; }
+.main-column { width: auto; margin: 0 324px 10px 0; }
+.generic-form, .search-form { max-width: 100%; margin-left: 0; }
+.footer { margin: 0; padding: 24px 36px; font-size: 11px; color: var(--muted); }
+
+/* ---------- Panels, posts, tables ---------- */
+.panel, .forum-post, .huge-movie-list__movie {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.panel__heading, .forum-post__heading {
+  background: var(--raised); border-bottom: 1px solid var(--border);
+  border-radius: 11px 11px 0 0; padding: 9px 14px;
+}
+.panel__body { padding: 14px; }
+.forum-post__avatar { border-right-color: var(--border); }
+.forum-post__body { padding: 14px; font-size: 13.5px; line-height: 1.6; }
+.forum-post__avatar__image { border-radius: 8px; }
+
+.table > thead > tr, .table > tbody > tr { background: var(--surface); }
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th,
+.table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  border: 0; border-top: 1px solid var(--border); padding: 8px 12px;
+}
+.table--bordered {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  border-collapse: separate; border-spacing: 0; overflow: hidden;
+}
+.table--panel-like > thead > tr { background: var(--raised); }
+.table--panel-like > thead > tr > th { padding: 9px 12px; }
+.table--striped > tbody > tr:nth-child(odd) > td,
+.table--striped > tbody > tr:nth-child(odd) > th { background: #1a2139; }
+.table__background-color--alternative { background-color: #1a2139 !important; }
+.table > tbody > tr.basic-movie-list__details-row,
+.table > tbody > tr.release-name-movie-list__details-row,
+.table > tbody > tr.compact-movie-list__details-row--odd { background: #121829; }
+.table > tbody > tr.movie-page__torrent--highlighted { background: var(--raised); }
+.table > tbody > tr.inbox-message--unread > td { background: #4a2333; }
+.release-name-movie-list__movie__release-category { background: var(--raised); }
+.huge-movie-list__movie__ratings-and-synopsis > tbody > tr > td { background: var(--raised); border-color: var(--border); }
+
+/* ---------- Forms ---------- */
+input, select, textarea, option {
+  background-color: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); padding: 6px 10px;
+}
+button, input[type=submit], input[type=button],
+button:hover, input[type=submit]:hover, input[type=button]:hover {
+  background-color: var(--raised); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-weight: 600; padding: 6px 14px;
+}
+button:hover, input[type=submit]:hover, input[type=button]:hover {
+  background-color: var(--accent); border-color: var(--accent); color: var(--accent-ink);
+}
+button:disabled, input[type=submit]:disabled, input[type=button]:disabled {
+  background-color: var(--raised); color: var(--muted); opacity: .55;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+input[type=checkbox], input[type=radio] { accent-color: var(--accent); padding: 0; }
+.generic-form__footer, .search-form__footer { border-top-color: var(--border); }
+
+/* ---------- Cover grids (Top 10, browse) ---------- */
+.cover-movie-list, .cover-movie-list--narrow {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px; margin: 0;
+}
+.cover-movie-list > div:not(.cover-movie-list__movie) { display: none; } /* old float clearers */
+.cover-movie-list__movie, .cover-movie-list--narrow > .cover-movie-list__movie {
+  float: none; width: auto; margin: 0; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.cover-movie-list__movie:hover {
+  transform: translateY(-3px); border-color: var(--accent);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .45);
+}
+.cover-movie-list__movie__cover-link {
+  width: 100% !important; height: auto !important; aspect-ratio: 176 / 246;
+  background-size: cover !important; background-position: center !important;
+}
+.cover-movie-list__movie__undercover { padding: 9px 11px 10px; background: none; border-radius: 0; }
+.cover-movie-list__movie__title-row { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cover-movie-list__movie__title { color: var(--text); }
+.cover-movie-list__movie__year, .cover-movie-list__movie__tags { color: var(--muted); }
+.cover-movie-list__movie__rating, .basic-movie-list__movie__rating-container,
+.release-name-movie-list__movie__rating-container, .movie-tooltip__rating-container {
+  background: var(--raised); border-radius: 4px;
+}
+
+/* ---------- Movie page ---------- */
+.box_albumart { overflow: hidden; border: 0; box-shadow: 0 12px 30px rgba(0, 0, 0, .5); }
+.box_albumart .panel__heading { display: none; }
+.box_albumart .panel__body { padding: 0; }
+.sidebar-cover-image { width: 100%; }
+#movieinfo .panel__body > div { padding: 3px 0; }
+#movieinfo strong { color: var(--muted); font-weight: 600; }
+
+.movie-page__torrent-table td.basic-movie-list__torrent-edition {
+  padding-top: 14px; background: #121829;
+  font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.basic-movie-list__torrent-edition__main { color: var(--accent); }
+.movie-page__torrent-table .group_torrent_header:hover { background: var(--raised); }
+.movie-page__torrent-table .torrent-info-link { font-size: 13px; }
+.movie-page__torrent__panel {
+  margin: 12px; padding: 14px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.movie-page__torrent-report-container { background: var(--raised); }
+.movie-page__torrent-report-staff-comment { background: var(--bg); }
+.movie-page__trailer iframe, .youtube-player {
+  display: block; width: 100%; max-width: 760px; height: auto; aspect-ratio: 16 / 9;
+  border: 0; border-radius: 10px;
+}
+#synopsis { max-width: 760px; margin: 0 auto; font-size: 14px; line-height: 1.65; }
+#movie-ratings-table { width: 100%; }
+#movie-ratings-table td { padding: 12px; }
+.movie-page__actor-column { color: var(--muted); }
+
+/* ---------- Bits and pieces ---------- */
+blockquote, .release-description-preview, .mediainfo > tbody > tr, .mediainfo__section > tbody > tr {
+  background-color: var(--raised); border-color: var(--border);
+}
+blockquote { border-style: solid; border-width: 0 0 0 3px; border-left-color: var(--accent); border-radius: 0 8px 8px 0; }
+.mediainfo--in-release-description > tbody > tr,
+.mediainfo--in-release-description .mediainfo__section > tbody > tr { background-color: var(--surface); }
+.mediainfo > tbody > tr > td, .mediainfo__section, .bbcode-text-preview { border-color: var(--border); }
+code, .preformatted-text--scrolled, .code--copied_modal { background-color: #0a0e1a; border-radius: 6px; }
+.staff-toolbar { background: var(--raised); border-radius: 8px; }
+.bbcode-toolbar__button { border-radius: 4px; margin: 0 2px 4px 0; box-shadow: none; }
+.bbcode-toolbar__size-popup-row:hover { background: var(--raised); }
+.tabs__bar__list { border-bottom-color: var(--border); }
+.tabs__bar__link, .tabs__bar__link:hover, .tabs__bar__link:active, .tabs__bar__link:focus { background-color: var(--surface); }
+.tabs__bar__item--active > .tabs__bar__link, .tabs__bar__item--active > .tabs__bar__link:hover,
+.tabs__bar__item--active > .tabs__bar__link:active, .tabs__bar__item--active > .tabs__bar__link:focus {
+  background-color: var(--bg); border-color: var(--border); border-bottom-color: transparent; color: var(--accent);
+}
+.qtip-ptp {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border) !important; border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .55);
+}
+.movie-tooltip__action-row, .movie-tooltip__trailer__image { border-color: var(--border); }
+
+/* ---------- Narrow windows: sidebar goes back on top ---------- */
+@media (max-width: 900px) {
+  body { padding-left: 0; }
+  #header { position: static; width: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+  .sidebar { float: none; width: auto; }
+  .main-column { margin-right: 0; }
+  .page__main-content { padding: 20px 16px; }
+}
+
+/* ---------- Movies browse page: title + toolbar row ---------- */
+.toggleable-search-form__toggler-container { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; text-align: left; }
+.toggleable-search-form__toggler-container::after { display: none; }
+body#torrents .toggleable-search-form__toggler-container::before {
+  content: "Movies"; margin-right: auto; font-size: 26px; font-weight: 700; letter-spacing: -.01em;
+}
+.toggleable-search-form__toggler {
+  display: inline-block; padding: 6px 14px; font-weight: 600; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+}
+.toggleable-search-form__toggler:hover { border-color: var(--accent); }
+#browse_settings {
+  display: block; box-sizing: content-box; width: 16px; height: 16px; padding: 7px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+}
+#browse_settings:hover { border-color: var(--accent); }
+.toggleable-search-form__search-form .search-form { width: auto; max-width: 860px; }
+.cover-movie-list__container--centered { margin-left: 0; }
+.cover-movie-list__movie__new { opacity: 1; font-size: 9px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+
+/* ---------- Home page ---------- */
+.bbcode__image { max-width: min(100%, 720px); height: auto; border-radius: 8px; }
+.sidebar img { max-width: 100%; height: auto; border-radius: 8px; }
+.panel__heading__toggler { font-size: 11px; font-weight: 400; color: var(--muted); }
+.last5-movies { padding: 14px 8px; font-size: 12px; }
+.last5-movies__table { table-layout: fixed; }
+.last5-movies__table > tbody > tr > td { padding: 0 6px; vertical-align: top; overflow: hidden; text-overflow: ellipsis; }
+.last5-movies__link {
+  display: block; width: 100%; height: auto; aspect-ratio: 106 / 150; margin-bottom: 8px;
+  border-radius: 8px; background-size: cover; transition: transform .15s ease;
+}
+.last5-movies__link:hover { transform: translateY(-3px); }
+#news .panel__heading { font-size: 14px; }
+#news .panel__body { font-size: 14px; line-height: 1.65; }
+#morenews {
+  display: inline-block; padding: 6px 14px; font-weight: 600;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+}
+.user-recommendation__image { border-radius: 6px; }
+
+/* ---------- Mid-width windows: side panels drop below the main column ---------- */
+@media (max-width: 1180px) {
+  .thin { display: flex; flex-direction: column; }
+  .sidebar {
+    order: 2; float: none; width: auto; display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; align-items: start;
+  }
+  .sidebar::after { display: none; }
+  .sidebar > * { margin-bottom: 0; }
+  .main-column { margin-right: 0; }
+  /* movie page keeps its poster column beside the torrents */
+  body#torrents .thin { display: block; }
+  body#torrents .sidebar { display: block; float: right; width: 220px; }
+  body#torrents .sidebar > * { margin-bottom: 1em; }
+  body#torrents .main-column { margin-right: 240px; }
+}
+@media (max-width: 900px) {
+  body#torrents .sidebar { float: none; width: auto; }
+  body#torrents .main-column { margin-right: 0; }
+}
