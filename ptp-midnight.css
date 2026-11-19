@@ -507,3 +507,35 @@ body#torrents .thin #trailer iframe { max-width: none; }
   :is(div, section):has(> .huge-movie-list__movie) { grid-template-columns: 1fr; }
   .huge-movie-list__movie, .huge-movie-list__movie:not(:first-child) { grid-template-columns: 120px minmax(0, 1fr); }
 }
+
+/* =====================================================================
+   TOP 10: filter panel collapsed to a button (opens on hover, stays open
+   while you type in it), and a fixed 5-per-row poster grid so every
+   10-movie section is exactly 2 full rows.
+   ===================================================================== */
+body#top10 #content { position: relative; }
+body#top10 #content > .search-form {
+  /* parked beside the settings gear: 75px down, 67px in from the right edge of the content area */
+  position: absolute; top: 75px; right: 67px; display: inline-block; width: auto; margin: 0;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+}
+body#top10 #content > .search-form::before { content: "[+] Filter"; display: block; padding: 6px 14px; font-weight: 600; cursor: pointer; }
+body#top10 #content > .search-form:hover,
+body#top10 #content > .search-form:focus-within { border-color: var(--accent); }
+body#top10 #content > .search-form:hover::before,
+body#top10 #content > .search-form:focus-within::before { content: "[-] Filter"; }
+body#top10 #content > .search-form > .panel__body {
+  display: none; position: absolute; top: 100%; right: -1px; z-index: 50; width: 560px; max-width: 80vw;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .55);
+}
+body#top10 #content > .search-form:hover > .panel__body,
+body#top10 #content > .search-form:focus-within > .panel__body { display: block; }
+
+body#top10 .cover-movie-list, body#top10 .cover-movie-list--narrow {
+  grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px;
+  max-width: 1120px; /* poster size cap: raise for bigger posters, lower for smaller */
+}
+@media (max-width: 700px) {
+  body#top10 .cover-movie-list, body#top10 .cover-movie-list--narrow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
