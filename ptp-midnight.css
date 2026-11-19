@@ -361,8 +361,8 @@ body#torrents .toggleable-search-form__toggler-container::before {
 /* =====================================================================
    MOVIE PAGE: hero layout. The old two-column float is dissolved
    (display: contents) and every block is placed on one 12-column grid:
-   hero (poster, title, tags, actions, ratings, synopsis, credits),
-   then torrents, then collections/similar/pot, then trailer + cast, then comments.
+   hero (poster, title, tags, actions, ratings, synopsis, trailer, credits),
+   then torrents, then collections/similar/pot, then cast, then comments.
    ===================================================================== */
 body#torrents .thin:has(.box_albumart) {
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -436,16 +436,29 @@ body#torrents .thin #collages, body#torrents .thin #similar_movies, body#torrent
 body#torrents .thin #collages { grid-column: 1 / 5; }
 body#torrents .thin #similar_movies { grid-column: 5 / 9; }
 body#torrents .thin #freeleech_pot { grid-column: 9 / -1; }
-body#torrents .thin:has(#trailer iframe) #trailer { grid-column: 1 / 8; }
-body#torrents .thin:has(#trailer iframe) .main-column > .table:has(.movie-page__actor-column) { grid-column: 8 / -1; }
-body#torrents .thin #trailer iframe { max-width: none; }
+/* a movie with no Collections card: the other two share the row */
+body#torrents .thin:not(:has(#collages)) #similar_movies { grid-column: 1 / 7; }
+body#torrents .thin:not(:has(#collages)) #freeleech_pot { grid-column: 7 / -1; }
+/* Trailer lives in the hero, beside ratings + synopsis. The YouTube frame takes focus on load and
+   the browser scrolls it into view, so it must sit inside the first screen or the page opens scrolled down. */
+body#torrents .thin:has(#trailer iframe) #trailer { grid-column: 9 / -1; grid-row: 5 / 7; order: 0; }
+body#torrents .thin:has(#trailer iframe) .panel:has(> #movie-ratings-table),
+body#torrents .thin:has(#trailer iframe) #synopsis { grid-column: 4 / 9; }
+body#torrents .thin #trailer iframe { max-width: none; border-radius: 12px; }
 
 @media (max-width: 1180px) {
   body#torrents .thin #collages { grid-column: 1 / 7; }
   body#torrents .thin #similar_movies { grid-column: 7 / -1; }
   body#torrents .thin #freeleech_pot { grid-column: 1 / -1; }
-  body#torrents .thin:has(#trailer iframe) #trailer,
-  body#torrents .thin:has(#trailer iframe) .main-column > .table:has(.movie-page__actor-column) { grid-column: 1 / -1; }
+  body#torrents .thin:not(:has(#collages)) #similar_movies { grid-column: 1 / 7; }
+  body#torrents .thin:not(:has(#collages)) #freeleech_pot { grid-column: 7 / -1; }
+  /* trailer drops under the synopsis, still inside the hero */
+  body#torrents .thin:has(.box_albumart) { grid-template-rows: repeat(7, auto) 1fr; }
+  body#torrents .thin:has(.box_albumart)::before, body#torrents .thin .box_albumart { grid-row: 1 / 9; }
+  body#torrents .thin:has(#trailer iframe) #trailer { grid-column: 4 / -1; grid-row: 7; }
+  body#torrents .thin:has(#trailer iframe) .panel:has(> #movie-ratings-table),
+  body#torrents .thin:has(#trailer iframe) #synopsis { grid-column: 4 / -1; }
+  body#torrents .thin #movieinfo { grid-row: 8; }
 }
 @media (max-width: 900px) {
   body#torrents .thin:has(.box_albumart) { display: flex; flex-direction: column; }
@@ -456,7 +469,7 @@ body#torrents .thin #trailer iframe { max-width: none; }
   body#torrents .thin:has(.box_albumart) > .linkbox { order: -4; }
   body#torrents .thin .panel:has(> #movie-ratings-table) { order: -3; }
   body#torrents .thin #synopsis { order: -2; }
-  body#torrents .thin #movieinfo { order: -1; }
+  body#torrents .thin #movieinfo, body#torrents .thin:has(#trailer iframe) #trailer { order: -1; }
 }
 
 /* =====================================================================
